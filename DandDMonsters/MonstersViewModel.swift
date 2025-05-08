@@ -19,13 +19,16 @@ class MonstersViewModel {
     var monsters: [Monster] = []
     let baseURL = URL(string: "https://www.dnd5eapi.co")
     let urlString = "https://www.dnd5eapi.co/api/2014/monsters"
+    var isLoading = false
     
     func getData() async {
+        isLoading = true
         print("🕸️ We are accessing the url \(urlString)")
         
         // Ceate a URL
         guard let url = URL(string: urlString) else {
             print("😡 ERROR: Could not create a URL from \(urlString)")
+            isLoading = false
             return
         }
         
@@ -36,6 +39,7 @@ class MonstersViewModel {
             
             guard let returned = try? JSONDecoder().decode(Results.self, from: data) else {
                 print("😡 JSON ERROR: Could not decode returned JSON data at \(urlString)")
+                isLoading = false
                 return
             }
             print("😎 JSON returned! count: \(returned.results.count) monsters")
@@ -46,9 +50,11 @@ class MonstersViewModel {
             Task {@MainActor in  // forces this code to run on the main thread
                 self.count = returned.count
                 self.monsters = returned.results
+                isLoading = false
             }
 
         } catch {
+            isLoading = false
             print("😡 JSON ERROR: Could not get data from \(urlString) \(error.localizedDescription)")
         }
         
