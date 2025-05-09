@@ -58,10 +58,5 @@ class MonstersViewModel {
             print("😡 JSON ERROR: Could not get data from \(urlString) \(error.localizedDescription)")
         }
         
-        
-//        let (data, _) = try await URLSession.shared.data(from: URL(string: urlString)!)
-//        let results = try JSONDecoder().decode(Results.self, from: data)
-//        self.count = results.count
-//        self.monsters = results.monsters
     }
 }

@@ -15,8 +15,13 @@ struct MonsterListView: View {
             // use list since this data is viewed, not edited
             ZStack {
                 List(monstersVM.monsters) { monster in
-                    Text(monster.name)
-                        .font(.title2)
+//  struct NavigationLink<Label, Destination> where Label : View, Destination : View
+                    NavigationLink {  // use destination viewLabel option
+                        MonsterDetailView(monster: monster)
+                    } label: {
+                        Text(monster.name)
+                            .font(.title2)
+                    }
                 }
                 .listStyle(.plain)
                 
