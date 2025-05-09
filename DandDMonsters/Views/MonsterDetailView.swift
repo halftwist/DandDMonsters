@@ -43,6 +43,32 @@ struct MonsterDetailView: View {
                 }
             }
             .font(.title)
+
+//            To gain more control over the loading process, use the init(url:scale:transaction:content:) initializer, which takes a content closure that receives an AsyncImagePhase to indicate the state of the loading operation. Return a view that’s appropriate for the current phase:
+//            AsyncImage(init(url:scale:transaction:content:))
+//            Loads and displays a modifiable image from the specified URL in phases.
+            
+            AsyncImage(url: URL(string: monsterDetailVM.imageURL)) { phase in
+                if let image = phase.image {  // we have a valid image
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(radius: 16)
+                } else if phase.error != nil {  // we had an error
+                    Image(systemName: "questionmark.square.dashed")
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(radius: 16)
+                } else {  // use a placeholder while image is loading
+                   ProgressView()
+                        .tint(.red)
+                        .scaleEffect(4)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 250)
+                }
+            }
             
             Spacer()
             
